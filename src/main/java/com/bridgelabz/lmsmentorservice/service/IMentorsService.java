@@ -2,21 +2,22 @@ package com.bridgelabz.lmsmentorservice.service;
 
 import com.bridgelabz.lmsmentorservice.dto.MentorsDTO;
 import com.bridgelabz.lmsmentorservice.model.MentorsModel;
+import com.bridgelabz.lmsmentorservice.util.Response;
 
 import java.util.List;
 
 public interface IMentorsService {
-    MentorsModel addMentor(MentorsDTO mentorsDTO);
+    Response addMentor(String token, MentorsDTO mentorsDTO);
 
-    MentorsModel addProfilePic(Long id, String profilePic);
+    Response addProfilePic(String token, Long id, String profilePic);
 
-    List<MentorsModel> getAllMentors();
+    List<MentorsModel> getAllMentors(String token);
 
-    MentorsModel updateMentorDetails(Long id, MentorsDTO mentorsDTO);
+    Response updateMentorDetails(String token, Long id, MentorsDTO mentorsDTO);
 
-    MentorsModel deleteDetails(Long id);
+    Response deleteDetails(String token, Long id);
 
-    MentorsModel getMentorsDetailsById(Long id);
+    Response getMentorsDetailsById(String token, Long id);
 
     Long mentorsCount();
 
