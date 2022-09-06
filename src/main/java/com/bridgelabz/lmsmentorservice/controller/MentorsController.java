@@ -96,8 +96,8 @@ public class MentorsController {
      * @Param :  token
      * */
     @GetMapping("/mentorsCont")
-    public ResponseEntity<Long> mentorsCount() {
-        Long response = mentorsService.mentorsCount();
+    public ResponseEntity<Long> mentorsCount(@RequestHeader String token) {
+        Long response = mentorsService.mentorsCount(token);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -107,15 +107,16 @@ public class MentorsController {
      * @Param :  token and mentorRole
      * */
     @GetMapping("/getMentorByRole")
-    public ResponseEntity<Long> mentorRole(@RequestParam String mentorRole) {
-        Long response = mentorsService.getMentorByRole(mentorRole);
+    public ResponseEntity<Long> mentorRole(@RequestHeader String token,
+                                           @RequestParam String mentorRole) {
+        Long response = mentorsService.getMentorByRole(mentorRole,token);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     // Without Query get Count
     @GetMapping("/getAllCount")
-    public ResponseEntity<Long> getAllCount() {
-        Long response = mentorsService.getAllCount();
+    public ResponseEntity<Long> getAllCount(@RequestHeader String token) {
+        Long response = mentorsService.getAllCount(token);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

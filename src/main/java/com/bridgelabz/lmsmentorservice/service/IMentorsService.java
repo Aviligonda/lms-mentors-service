@@ -19,10 +19,10 @@ public interface IMentorsService {
 
     Response getMentorsDetailsById(String token, Long id);
 
-    Long mentorsCount();
+    Long mentorsCount(String token);
 
-    Long getMentorByRole(String token);
+    Long getMentorByRole(String token, String s);
 
-    Long getAllCount();
+    Long getAllCount(String token);
 
 }

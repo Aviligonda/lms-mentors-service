@@ -84,7 +84,7 @@ public class MentorsService implements IMentorsService {
      * */
     @Override
     public List<MentorsModel> getAllMentors(String token) {
-        boolean isUserPresent = restTemplate.getForObject("http://localhost:8080/admin/validate/" + token, Boolean.class);
+        boolean isUserPresent = restTemplate.getForObject("http://ADMIN-SERVICE:8080/admin/validate/" + token, Boolean.class);
         if (isUserPresent) {
             List<MentorsModel> isMentors = mentorsRepository.findAll();
             if (isMentors.size() > 0) {
@@ -103,7 +103,7 @@ public class MentorsService implements IMentorsService {
      * */
     @Override
     public Response updateMentorDetails(String token, Long id, MentorsDTO mentorsDTO) {
-        boolean isUserPresent = restTemplate.getForObject("http://localhost:8080/admin/validate/" + token, Boolean.class);
+        boolean isUserPresent = restTemplate.getForObject("http://ADMIN-SERVICE:8080/admin/validate/" + token, Boolean.class);
         if (isUserPresent) {
             Optional<MentorsModel> isMentorPresent = mentorsRepository.findById(id);
             if (isMentorPresent.isPresent()) {
@@ -141,7 +141,7 @@ public class MentorsService implements IMentorsService {
      * */
     @Override
     public Response deleteDetails(String token, Long id) {
-        boolean isUserPresent = restTemplate.getForObject("http://localhost:8080/admin/validate/" + token, Boolean.class);
+        boolean isUserPresent = restTemplate.getForObject("http://ADMIN-SERVICE:8080/admin/validate/" + token, Boolean.class);
         if (isUserPresent) {
             Optional<MentorsModel> isMentor = mentorsRepository.findById(id);
             if (isMentor.isPresent()) {
@@ -166,7 +166,7 @@ public class MentorsService implements IMentorsService {
      * */
     @Override
     public Response getMentorsDetailsById(String token, Long id) {
-        boolean isUserPresent = restTemplate.getForObject("http://localhost:8080/admin/validate/" + token, Boolean.class);
+        boolean isUserPresent = restTemplate.getForObject("http://ADMIN-SERVICE:8080/admin/validate/" + token, Boolean.class);
         if (isUserPresent) {
             Optional<MentorsModel> isMentor = mentorsRepository.findById(id);
             if (isMentor.isPresent()) {
@@ -184,9 +184,13 @@ public class MentorsService implements IMentorsService {
      * @Param :  token and bankDetailsDTO
      * */
     @Override
-    public Long mentorsCount() {
-        Long mentorsCount = mentorsRepository.mentorsCount();
-        return mentorsCount;
+    public Long mentorsCount(String token) {
+        boolean isUserPresent = restTemplate.getForObject("http://ADMIN-SERVICE:8080/admin/validate/" + token, Boolean.class);
+        if (isUserPresent) {
+            Long mentorsCount = mentorsRepository.mentorsCount();
+            return mentorsCount;
+        }
+        throw new LMSException(400, "Token Wrong");
     }
 
     /*
@@ -195,19 +199,27 @@ public class MentorsService implements IMentorsService {
      * @Param :  token and bankDetailsDTO
      * */
     @Override
-    public Long getMentorByRole(String mentorRole) {
-        Long mentorCountByRole = mentorsRepository.mentorsCountByRole(mentorRole);
-        return mentorCountByRole;
+    public Long getMentorByRole(String mentorRole, String token) {
+        boolean isUserPresent = restTemplate.getForObject("http://ADMIN-SERVICE:8080/admin/validate/" + token, Boolean.class);
+        if (isUserPresent) {
+            Long mentorCountByRole = mentorsRepository.mentorsCountByRole(mentorRole);
+            return mentorCountByRole;
+        }
+        throw new LMSException(400, "Token Wrong");
     }
 
     //Without Query get count;
     @Override
-    public Long getAllCount() {
-        long count = mentorsRepository.count();
-        if (count > 0) {
-            return count;
-        } else {
-            throw new LMSException(400, "No Data Found");
+    public Long getAllCount(String token) {
+        boolean isUserPresent = restTemplate.getForObject("http://ADMIN-SERVICE:8080/admin/validate/" + token, Boolean.class);
+        if (isUserPresent) {
+            long count = mentorsRepository.count();
+            if (count > 0) {
+                return count;
+            } else {
+                throw new LMSException(400, "No Data Found");
+            }
         }
+        throw new LMSException(400, "Token Wrong");
     }
 }
